@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 from datetime import timedelta
-from stock_analysis import calculate_rsi
+from stock_analisys import calculate_rsi
 
 
 def get_sp500_symbols():

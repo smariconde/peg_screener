@@ -1,7 +1,7 @@
 from skopt import gp_minimize
 from skopt.space import Integer, Real
 from skopt.utils import use_named_args
-from stock_analysis import identify_pattern
+from stock_analisys import identify_pattern
 from data_processing import process_and_cache_data
 from tqdm import tqdm
 

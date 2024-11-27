@@ -1,15 +1,24 @@
 import streamlit as st
 import pandas as pd
 from data_processing import process_and_cache_data
-from stock_analysis import analyze_stock, create_chart
+from stock_analisys import analyze_stock, create_chart
 import yfinance as yf
+from sector_analisys import sector_relative_performance
 
 @st.cache_data
 def load_data():
     return list(process_and_cache_data())
 
 def main():
-    st.title("Pattern Detection Parameters")
+    st.title("PEG Screener")
+    st.sidebar.header("Sector Analisys")
+    sector_analysis = st.sidebar.button(f"Analizar", type="primary")
+    if sector_analysis:
+        relative_prices, performance_fig = sector_relative_performance()
+        st.plotly_chart(performance_fig)
+        final_performance = relative_prices.iloc[-1].sort_values(ascending=False)
+        st.dataframe(final_performance)
+
 
     # Usar session state para mantener los datos cargados
     if 'cached_data' not in st.session_state:
@@ -44,7 +53,7 @@ def main():
     cached_data = st.session_state.cached_data
     
     if cached_data and len(cached_data) > 0:
-        st.sidebar.header("Select a stock")
+        st.sidebar.subheader("Select a stock")
         total_stocks = len(cached_data.keys())
         st.sidebar.write(f"Found {total_stocks} stocks with recent gaps")
         selected_symbol = st.sidebar.pills("Stocks", list(cached_data.keys()))
